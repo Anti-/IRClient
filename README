@@ -13,4 +13,4 @@ Currently in development as of Oct. 8, 2012:
 	* Switch from multiple HashTables to one with class stuff
 
 Current bugs:
-	* Segmentation fault (core dumped) error sometimes happens, if not, nothing happens except lag
+	* Only one network seems to be connected to or only display data from

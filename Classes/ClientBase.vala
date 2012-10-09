@@ -66,14 +66,14 @@ namespace Client {
 		/* This must be overridden in a subclass! */
 		public async virtual void loopFunction(string strNetwork){}
 		
-		public async string recvData(string strNetwork){
+		public string recvData(string strNetwork){
 			string strData = "";
 			try {
-				strData = yield this.hmpNetworks[strNetwork].objStream.read_line_async();
+				strData = this.hmpNetworks[strNetwork].objStream.read_line(null);
 			} catch(GLib.IOError objError){
 				stdout.printf("Error: %s%c", objError.message, 10);
 			}
-			if(strData != "" || strData != null){
+			if(strData != "" || strData != (null)){
 				stdout.printf("%s%c", strData, 10);
 				return strData;
 			}

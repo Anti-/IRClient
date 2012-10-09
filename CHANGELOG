@@ -5,3 +5,5 @@
  * Made methods asynchronous
  * Added more to configuration and added better/cooler configuration reading
  * Now needs only one HashTable, and added more classes
+ * Fixed segmentation fault error
+

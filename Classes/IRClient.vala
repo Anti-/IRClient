@@ -1,19 +1,40 @@
 namespace Client {
 	
-	using Client;
-	
 	class IRClient : ClientBase {
 		
 		construct {
-			this.hmpNetworks = new Gee.HashMap<string, Gee.HashMap<string, string>>();
-			this.hmpConnections = new Gee.HashMap<string, GLib.SocketConnection>();
-			this.hmpInputStreams = new Gee.HashMap<string, DataInputStream>();
-			this.addNetwork("IRCx", "i.r.cx", 6697, true);
+			this.hmpNetworks = new Gee.HashMap<string, IRCNetwork>();
 			this.objKeyFile = new GLib.KeyFile();
-			this.joinNetwork("IRCx", "#brows");
 		}
 		
-		public override void loopFunction(string strNetwork){
+		public void readConfiguration(){
+			string strNetwork = "";
+			string strAddress = "";
+			string intPort = ""; 
+			string strNick = "";
+			string strUser = "";
+			string strReal = "";
+			string blnAutojoin = "false";
+			string blnSSL = "false";
+			try {
+				this.objKeyFile.load_from_file("Settings.ini", GLib.KeyFileFlags.NONE);
+				foreach(string strNetworks in this.objKeyFile.get_groups()){
+					strNetwork = strNetworks;
+					strAddress = this.objKeyFile.get_value(strNetwork, "Address");
+					intPort = this.objKeyFile.get_value(strNetwork, "Port").to_string();
+					strNick = this.objKeyFile.get_value(strNetwork, "Nick");
+					strUser = this.objKeyFile.get_value(strNetwork, "User");
+					strReal = this.objKeyFile.get_value(strNetwork, "Real");
+					blnAutojoin = this.objKeyFile.get_value(strNetwork, "Autojoin");
+					blnSSL = this.objKeyFile.get_value(strNetwork, "SSL");
+					this.addNetwork({strNetwork, strAddress, intPort, strNick, strUser, strReal, blnAutojoin, blnSSL});
+				}
+			} catch(GLib.Error objError){
+				stdout.printf("Error: %s%c", objError.message, 10);
+			}
+		}
+		
+		public async override void loopFunction(string strNetwork){
 			while(true){
 				this.recvData(strNetwork);
 			}

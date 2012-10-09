@@ -1,0 +1,7 @@
+2012-10-08 Anti- IRClient
+
+ * Fixed string[] to string error
+ * Added newline character in error output
+ * Made methods asynchronous
+ * Added more to configuration and added better/cooler configuration reading
+ * Now needs only one HashTable, and added more classes

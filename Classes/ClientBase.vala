@@ -15,38 +15,29 @@ namespace Client {
 			objNetwork.strReal = arrArguments[5];
 			objNetwork.blnAutojoin = arrArguments[6];
 			objNetwork.blnSSL = arrArguments[7];
+			objNetwork.arrChannels = arrArguments[8].split(" ");
 			this.hmpNetworks[strNetwork] = objNetwork;
 			if(objNetwork.blnAutojoin == "true"){
-				this.joinNetwork({strNetwork, "#brows"});
+				this.joinNetwork(strNetwork);
 			}
 		}
 		
-		public async bool joinNetwork(string[] arrArguments){
-			string strNetwork = arrArguments[0];
+		public async bool joinNetwork(string strNetwork){
 			if(this.hmpNetworks.has_key(strNetwork)){
 				try {
 					var objAddresses = yield objResolver.lookup_by_name_async(this.hmpNetworks[strNetwork].strAddress);
 					var strAddress = objAddresses.nth_data(0);
 					var objAddress = new GLib.InetSocketAddress(strAddress, (uint16)int.parse(this.hmpNetworks[strNetwork].intPort));
-					SocketClient objClient = new SocketClient();
-					// Booleans can't be used here due to the hashmap's structure, no big deal
+					GLib.SocketClient objClient = new SocketClient();
 					if(this.hmpNetworks[strNetwork].blnSSL == "true"){
 						objClient.set_tls(true);
 						objClient.set_tls_validation_flags(0);
 					}
-					this.hmpNetworks[strNetwork].setConnection(yield objClient.connect_async(objAddress));
-					GLib.SocketConnection objConnection = yield this.hmpNetworks[strNetwork].getConnection();
-					this.hmpNetworks[strNetwork].setInputStream(new DataInputStream(objConnection.input_stream));
-					objConnection.socket.set_blocking(true);
+					GLib.SocketConnection objConnection = this.hmpNetworks[strNetwork].objConnection = yield objClient.connect_async(objAddress);
+					this.hmpNetworks[strNetwork].objStream = new DataInputStream(objConnection.input_stream);
 					this.recvData(strNetwork);
 					this.sendData(strNetwork, "NICK " + this.hmpNetworks[strNetwork].strNick);
 					this.sendData(strNetwork, "USER " + this.hmpNetworks[strNetwork].strNick + " " + this.hmpNetworks[strNetwork].strUser + " " + this.hmpNetworks[strNetwork].strUser + ": " + this.hmpNetworks[strNetwork].strReal);
-					string strChannel;
-					for(int intChannel = 1; intChannel <= arrArguments.length; intChannel++){
-						strChannel = arrArguments[intChannel];
-						if(strChannel == null) break;
-						this.joinChannel(strNetwork, arrArguments[intChannel]);
-					}
 					this.loopFunction(strNetwork);
 				} catch(GLib.Error objError){
 					stdout.printf("Error: %s%c", objError.message, 10);
@@ -67,24 +58,25 @@ namespace Client {
 		public async virtual void loopFunction(string strNetwork){}
 		
 		public string recvData(string strNetwork){
-			string strData = "";
+			string? strData = "";
 			try {
 				strData = this.hmpNetworks[strNetwork].objStream.read_line(null);
 			} catch(GLib.IOError objError){
 				stdout.printf("Error: %s%c", objError.message, 10);
 			}
-			if(strData != "" || strData != (null)){
+			if(strData != null){
 				stdout.printf("%s%c", strData, 10);
 				return strData;
 			}
 			return "";
 		}
 		
-		public async void sendData(string strNetwork, string strPacket){
+		public void sendData(string strNetwork, string strPacket){
 			var strData = @strPacket + "\r\n";
 			try {
-				this.hmpNetworks[strNetwork].objConnection.output_stream.write_async(strData.data);
-			} catch(GLib.IOError objError){
+				this.hmpNetworks[strNetwork].objConnection.output_stream.write(strData.data);
+				this.hmpNetworks[strNetwork].objConnection.output_stream.flush();
+			} catch(GLib.Error objError){
 				stdout.printf("Error: %s%c", objError.message, 10);
 			}
 		}

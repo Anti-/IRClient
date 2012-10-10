@@ -1,16 +1,24 @@
 IRClient is a [graphical] IRC client written in Vala (still not ready for [daily] usage)
 
+Compiling & Running
+	1) You're going to need valac installed, if you haven't already - install it
+	2) Open up your terminal and cd into the root directory of IRClient
+	3) Execute this command without the quotes "valac -o Client *.vala */*.vala --pkg gio-2.0 --pkg gtk+-2.0 --pkg gee-1.0"
+	4) Run IRClient with ./Client
+
 Authors/Contributers
 	* Anti (Anti- on GitHub) for lead development
 	* max (mrtrop on GitHub) for GTK interface
-	* sam/Stanley (sam0 on GitHub) for development
+	* sam/Stanley (sam0 on GitHub) for testing (and [possible] future development)
 	* nemequ on Vala's IRC channel for assistance with errors
 	
-Currently in development as of Oct. 8, 2012:
+Currently in development as of Oct. 9, 2012
 	* joinChannel method in ClientBase class
 	* Asynchronous functions
 	* Graphical interface
-	* Switch from multiple HashTables to one with class stuff
+	* Method comments so readers/developers know what's going on
 
-Current bugs:
-	* Only one network seems to be connected to or only display data from
+Current bugs
+	* Only one network gets connected to if there are multiple network-autojoin configurations and/or read off
+	* Channels are not joined (maybe applies only to auto-join channels)
+	* Sometimes a segmentation fault may occur and/or extreme lag

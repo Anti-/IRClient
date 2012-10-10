@@ -1,7 +1,7 @@
 class IRCUser : GLib.Object {
 	
-	protected string strNick;
-	protected string strReal;
-	protected string strUser;
+	public string strNick;
+	public string strReal;
+	public string strUser;
 
 }

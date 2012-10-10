@@ -4,6 +4,15 @@
  * Added newline character in error output
  * Made methods asynchronous
  * Added more to configuration and added better/cooler configuration reading
- * Now needs only one HashTable, and added more classes
+ * Now needs only one HashTable because of new classes
  * Fixed segmentation fault error
 
+2012-10-09 Anti- IRClient
+
+ * Fixed (null) output and possibly some other stuff with recvData
+ * Removed IRCNetwork methods for better optimization
+ * Removed some asynchronous stuff (recvData, sendData)
+ * Configuration reading should be fully working now, though there are no mistake checks (present)
+ * Less warnings on compile (only warnings are those for unused fields/methods)
+ * Removed/changed some parameters in methods aswell their types, most noticeably string[]'s
+ * Added input stream flush after every write (suggested by sam)

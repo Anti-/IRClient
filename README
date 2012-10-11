@@ -20,5 +20,5 @@ Currently in development as of Oct. 9, 2012
 
 Current bugs
 	* Only one network gets connected to if there are multiple network-autojoin configurations and/or read off
-	* Channels are not joined (maybe applies only to auto-join channels)
+	* Channels are not joined (only applies to auto-join channels)
 	* Sometimes a segmentation fault may occur and/or extreme lag

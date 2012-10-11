@@ -73,6 +73,7 @@ namespace Client {
 		
 		public void sendData(string strNetwork, string strPacket){
 			var strData = @strPacket + "\r\n";
+			stdout.printf("Sending data: %s%c", strPacket, 10);
 			try {
 				this.hmpNetworks[strNetwork].objConnection.output_stream.write(strData.data);
 				this.hmpNetworks[strNetwork].objConnection.output_stream.flush();

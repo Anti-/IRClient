@@ -42,13 +42,14 @@ namespace Client {
 			while(true){
 				strData = this.recvData(strNetwork);
 				if(strData.index_of(":End of message of the day.") > -1){
-					string[] arrChannel;
+				 this.joinChannel(strNetwork, "#brows");
+			/*		string[] arrChannel;
 					foreach(string strChannelVal in this.hmpNetworks[strNetwork].arrChannels){
 						arrChannel = strChannelVal.split("/", 2);
 						if(arrChannel[1] == "true"){
-							this.joinChannel(strNetwork, arrChannel[0]);
+							this.sendData(strNetwork, arrChannel[0]);
 						}
-					}
+					} */
 				} else {
 					if(strData.index_of("PING") > -1){
 						strSend = strData.replace("PING", "PONG");

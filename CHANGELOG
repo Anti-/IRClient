@@ -16,3 +16,7 @@
  * Less warnings on compile (only warnings are those for unused fields/methods)
  * Removed/changed some parameters in methods aswell their types, most noticeably string[]'s
  * Added input stream flush after every write (suggested by sam)
+
+2012-10-10 Anti- IRClient
+
+ * Nothing much, joining channels work but channel reading in configuration doesn't

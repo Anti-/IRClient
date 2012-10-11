@@ -12,8 +12,9 @@ Authors/Contributers
 	* sam/Stanley (sam0 on GitHub) for testing (and [possible] future development)
 	* nemequ on Vala's IRC channel for assistance with errors
 	
-Currently in development as of Oct. 9, 2012
+Currently in development as of Oct. 10, 2012
 	* joinChannel method in ClientBase class
+	* Channel configuration reading
 	* Asynchronous functions
 	* Graphical interface
 	* Method comments so readers/developers know what's going on
